@@ -10,9 +10,8 @@ from experience_page import experience
 from project_page import projects
 from contact_form import contact
 from certifications_page import certifications
-from skills_page import skills
+from skills import skills
 from cv_demo.cv_demo import cv_demo
-#from education_page import education
 
 
 # ----------------- Page setup -----------------
@@ -128,8 +127,8 @@ def aboutMe():
 # ----------------- Top Navigation -----------------
 selected = option_menu(
     menu_title=None,
-    options=["About me", "Projects", "Skills" , "Experience", "CV Demo", "Certifications","Education" ,"Contact"],
-    icons=['person-fill', "folder", "cpu", 'briefcase', 'camera', 'mortarboard-fill', 'file-text','envelope','file-text'],
+    options=["About me", "Resume", "Skills", "Experience", "Projects", "CV Demo", "Certifications", "Contact"],
+    icons=['person-fill', 'file-text', 'cpu', 'briefcase', 'folder', 'camera', 'mortarboard-fill', 'envelope'],
     orientation="horizontal",
     default_index=0,
 )
@@ -151,6 +150,11 @@ elif selected == "Contact":
     contact()
 elif selected == "CV Demo":
     cv_demo()
+
+
+
+
+
 
 
 

@@ -1,35 +1,156 @@
-# cv_demo.py
+# portfolio.py
 import streamlit as st
-import cv2
-import numpy as np
-from PIL import Image
+from streamlit_lottie import st_lottie
+import json
+import base64
+from cv_demo import cv_demo  # Import your interactive CV demo
 
-def cv_demo():
-    st.title("🎨 Interactive CV Demo: Cartoonify Your Image")
-    st.write("Upload an image and see it transformed into a cartoon!")
+# Custom pages
+from reume_page import resume
+from experience_page import experience
+from project_page import projects
+from contact_form import contact
+from certifications_page import certifications
+from skills_page import skills
 
-    uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png"])
-    if uploaded_file:
-        img = Image.open(uploaded_file)
-        st.image(img, caption="Original Image", use_column_width=True)
+# ----------------- Page Setup -----------------
+st.set_page_config(
+    page_title="Mayur | AI Portfolio",
+    page_icon="🤖",
+    layout="wide",
+)
 
-        # Convert to OpenCV
-        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+# ----------------- Helpers -----------------
+def load_lottie_file(filepath: str):
+    try:
+        with open(filepath, "r") as file:
+            return json.load(file)
+    except:
+        return None
 
-        # Cartoonify
-        gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
-        gray = cv2.medianBlur(gray, 5)
-        edges = cv2.adaptiveThreshold(
-            gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 9
-        )
-        color = cv2.bilateralFilter(img_cv, 9, 250, 250)
-        cartoon = cv2.bitwise_and(color, color, mask=edges)
-        cartoon_rgb = cv2.cvtColor(cartoon, cv2.COLOR_BGR2RGB)
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
 
-        st.image(cartoon_rgb, caption="Cartoonified Image", use_column_width=True)
+logo_base64 = get_base64_image("assets/about/profile.jpg")
+resume_path = r"C:\Users\mayur\OneDrive\Desktop\Final\assets\resume\Mayur_Jare_Cv (2).pdf"
 
-        # Download button
-        from io import BytesIO
-        buffer = BytesIO()
-        Image.fromarray(cartoon_rgb).save(buffer, format="PNG")
-        st.download_button("Download Cartoon Image", buffer, file_name="cartoon.png")
+# ----------------- Custom CSS -----------------
+st.markdown(f"""
+<style>
+header {{visibility: hidden;}}
+html {{scroll-behavior: smooth; scroll-padding-top: 80px; background: linear-gradient(135deg, #e0f7fa, #e1bee7);}}
+.navbar {{
+    position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(63,43,150,0.95);
+    display: flex; align-items: center; padding: 0 20px; z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
+}}
+.navbar img {{height:50px; width:50px; border-radius:50%; margin-right:15px; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.2);}}
+.navbar a {{color:white; font-weight:bold; margin-left:25px; text-decoration:none;}}
+.navbar a:hover {{color:#ffeb3b;}}
+.section-title {{text-align:center; font-size:45px; font-weight:bold;
+background: linear-gradient(90deg,#3f2b96,#a8c0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+margin-bottom:20px; padding-top:50px;}}
+.card {{background-color:white; border-radius:15px; padding:20px; box-shadow:0px 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom:20px;}}
+.card:hover {{transform: translateY(-8px); box-shadow:0px 8px 20px rgba(0,0,0,0.15);}}
+.resume-eye {{display:inline-block; vertical-align:middle; margin-left:10px; cursor:pointer; transition:0.3s;}}
+.resume-eye:hover {{transform: scale(1.2);}}
+.back-to-top {{position:fixed; bottom:20px; right:20px; background:#3f2b96; color:white; padding:10px 15px; border-radius:50px; text-decoration:none; box-shadow:0 4px 10px rgba(0,0,0,0.2);}}
+@media (max-width:768px) {{.navbar a {{margin-left:10px; font-size:14px;}}}}
+</style>
+""", unsafe_allow_html=True)
+
+# ----------------- Navbar -----------------
+st.markdown(f"""
+<div class="navbar">
+    <img src="data:image/png;base64,{logo_base64}" alt="logo">
+    <a href="#about">About Me</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#cv">CV Demo</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#contact">Contact</a>
+</div>
+""", unsafe_allow_html=True)
+
+# ----------------- Sections -----------------
+def aboutMe():
+    st.markdown('<h2 id="about" class="section-title">👋 About Me</h2>', unsafe_allow_html=True)
+    col1, col2 = st.columns([2,1], gap="large")
+    with col1:
+        st.write("""
+        I’m an **AI Engineer & Data Scientist** passionate about building AI systems that scale in the real world.  
+        My work spans **Machine Learning, Deep Learning, Computer Vision, and Generative AI**.  
+        With expertise in **LLMs, MLOps, and Cloud Deployment**, I specialize in turning research into production-ready applications.
+        """)
+        with open(resume_path, "rb") as pdf_file:
+            PDFbyte = pdf_file.read()
+        st.markdown(f"""
+            <a href="data:application/pdf;base64,{base64.b64encode(PDFbyte).decode()}" target="_blank" class="resume-eye">👁️ View Resume</a>
+        """, unsafe_allow_html=True)
+    with col2:
+        lottie_anim = load_lottie_file("assets/Animation_blue_robo.json")
+        if lottie_anim:
+            st_lottie(lottie_anim, height=350)
+        else:
+            st.image("assets/about/profile.jpg", width=300)
+
+def skillsSection():
+    st.markdown('<h2 id="skills" class="section-title">🛠 Skills</h2>', unsafe_allow_html=True)
+    skills()  # Skills page: implement animated progress bars
+
+def experienceSection():
+    st.markdown('<h2 id="experience" class="section-title">💼 Experience</h2>', unsafe_allow_html=True)
+    experience()
+
+def projectsSection():
+    st.markdown('<h2 id="projects" class="section-title">📁 Projects</h2>', unsafe_allow_html=True)
+    projects()  # Projects page: card layout with Lottie/image
+
+def certificationsSection():
+    st.markdown('<h2 id="certifications" class="section-title">🏆 Certifications</h2>', unsafe_allow_html=True)
+    certifications()
+
+def cvDemoSection():
+    st.markdown('<h2 id="cv" class="section-title">📄 CV Demo</h2>', unsafe_allow_html=True)
+    
+    # PDF CV download/view
+    st.write("Preview your CV below:")
+    with open(resume_path, "rb") as f:
+        PDFbyte = f.read()
+    st.download_button(
+        label="Download Resume",
+        data=PDFbyte,
+        file_name="Mayur_Resume.pdf",
+        mime="application/pdf"
+    )
+    
+    st.markdown("---")
+    st.write("🎨 **Interactive CV Demo: Cartoonify Your Image**")
+    cv_demo()  # Interactive cartoonify demo
+
+def contactSection():
+    st.markdown('<h2 id="contact" class="section-title">✉ Contact</h2>', unsafe_allow_html=True)
+    contact()
+    st.markdown("### 📄 CV / Resume")
+    with open(resume_path, "rb") as pdf_file:
+        PDFbyte = pdf_file.read()
+    st.download_button(
+        label="View / Download Resume",
+        data=PDFbyte,
+        file_name="Mayur_Resume.pdf",
+        mime="application/pdf"
+    )
+
+# ----------------- Render Sections -----------------
+aboutMe()
+projectsSection()
+skillsSection()
+experienceSection()
+cvDemoSection()
+certificationsSection()
+contactSection()
+
+# Back to top button
+st.markdown('<a href="#about" class="back-to-top">⬆️ Top</a>', unsafe_allow_html=True)

@@ -10,7 +10,7 @@ from experience_page import experience
 from project_page import projects
 from contact_form import contact
 from certifications_page import certifications
-from skills import skills
+from skills_page import skills
 
  # Page setup
 st.set_page_config(
