@@ -153,8 +153,3 @@ elif selected == "CV Demo":
 
 
 
-
-
-
-
-
