@@ -152,5 +152,4 @@ elif selected == "Contact":
 elif selected == "CV Demo":
     cv_demo()
 
-##########
 
