@@ -4,15 +4,13 @@ import base64
 from streamlit_lottie import st_lottie
 import requests
 import json
-
+from reume_page import resume
+from experience_page import experience
 #from upwork_page import feedbackRating
-from pages.reume_page import resume
-from pages.experience_page import experience
-from pages.project_page import projects
-from pages.contact_form import contact
-from pages.certifications_page import certifications
-from pages.skills_page import skills
-from cv_demo.cv_demo import cv_demo
+from project_page import projects
+from contact_form import contact
+from certifications_page import certifications
+from skills_page import skills
 
  # Page setup
 st.set_page_config(
