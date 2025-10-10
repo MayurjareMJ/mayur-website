@@ -12,6 +12,7 @@ from contact_form import contact
 from certifications_page import certifications
 from skills_page import skills
 
+
  # Page setup
 st.set_page_config(
     page_title="Mayur",
@@ -132,28 +133,32 @@ with st.sidebar:
     # Other sidebar elements
     # st.sidebar.image("logo_image.png", width=200, use_column_width=True)
     # Option menu in sidebar
-    pages = ["About me", "Resume", "Skiils", "Experience",  "Projects & Publications", "Certifications", "Testimonials", "Contact"]
+    pages = ["About me", "Skills", "Experience",  "Projects & Publications", "Certifications", "Testimonials", "Resume", "Contact"]
     nav_tab_op = option_menu(
         menu_title="Mayur",
         options=pages,
-        icons=['person-fill', 'file-text', 'briefcase', 'folder', 'mortarboard-fill', 'star', 'envelope'],
+        icons=['person-fill', 'briefcase', 'folder', 'mortarboard-fill', 'star', 'file-text', 'envelope'],
         menu_icon="cast",
         default_index=0,
     )
 # Main content of the app
 if nav_tab_op == "About me":
     aboutMe()
+
 elif nav_tab_op == "Skills":
      skills()
 
-elif nav_tab_op == "Resume":
-    resume()
 elif nav_tab_op == "Experience":
     experience()
+
 elif nav_tab_op == "Projects & Publications":
     projects()
+
 elif nav_tab_op == "Certifications":
     certifications()
+
+elif nav_tab_op == "Resume":
+    resume()
 
 elif nav_tab_op == "Contact":
     contact()

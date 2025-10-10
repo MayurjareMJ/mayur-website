@@ -3,7 +3,7 @@ import streamlit as st
 from streamlit_lottie import st_lottie
 import json
 import base64
-from cv_demo import cv_demo  # Import your interactive CV demo
+#from cv_demo import cv_demo  # Import your interactive CV demo
 
 # Custom pages
 from reume_page import resume
@@ -126,9 +126,9 @@ def cvDemoSection():
         mime="application/pdf"
     )
     
-    st.markdown("---")
-    st.write("🎨 **Interactive CV Demo: Cartoonify Your Image**")
-    cv_demo()  # Interactive cartoonify demo
+    # st.markdown("---")
+    # st.write("🎨 **Interactive CV Demo: Cartoonify Your Image**")
+    # cv_demo()  # Interactive cartoonify demo
 
 def contactSection():
     st.markdown('<h2 id="contact" class="section-title">✉ Contact</h2>', unsafe_allow_html=True)

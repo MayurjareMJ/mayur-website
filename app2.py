@@ -595,8 +595,8 @@ elif selected == "Certifications":
     certifications()
 elif selected == "Contact":
     contact()
-elif selected == "CV Demo":
-    cv_demo()
+# elif selected == "CV Demo":
+#     cv_demo()
 elif selected == "Education":
     st.info("🎓 Education page coming soon!")
 
